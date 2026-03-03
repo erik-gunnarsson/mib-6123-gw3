@@ -1,0 +1,18 @@
+EFFICIENT IMPACT FRONTIER – INTERPRETATION NOTES
+==================================================
+
+1. TRADE-OFF BETWEEN SOCIAL AND FINANCIAL VALUE
+----------------------------------------
+The Efficient Impact Frontier traces the optimal trade-off between Total Expected Net Income (financial value) and Total Female Farmers and Employees Reached (social value). Portfolios on the frontier represent Pareto-optimal combinations: for a given level of social impact, no other feasible portfolio yields higher financial return; and for a given financial return, no other portfolio reaches more female farmers and employees.
+
+2. SHAPE OF THE FRONTIER
+----------------------------------------
+The upward-sloping frontier illustrates that achieving higher social impact typically requires accepting lower financial returns (or vice versa). The cloud of random portfolios below the frontier shows that most random combinations are dominated—i.e., they achieve neither the best financial nor social outcomes. Strategic portfolio construction (as in Exercise 1) aims to select combinations that lie on or near this frontier.
+
+3. EXERCISE 1 PORTFOLIOS
+----------------------------------------
+Exercise 1 portfolios were not loaded. Once added (via Excel or EXERCISE1_PORTFOLIOS), re-run and compare their positions to the frontier to assess how each strategy performs relative to the efficient trade-off.
+
+4. IMPLICATIONS FOR ROOT CAPITAL
+----------------------------------------
+The frontier helps Root Capital communicate the trade-off to stakeholders: pursuing greater impact (e.g., reaching more female farmers) generally comes at the cost of lower expected financial return. The Efficient Impact Frontier identifies the set of portfolios that optimally balance these objectives within the USD 2.5 million budget constraint.

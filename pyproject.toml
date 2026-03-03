@@ -1,0 +1,13 @@
+[project]
+name = "efficient-impact-frontier"
+version = "0.1.0"
+description = "Exercise 2 - Efficient Impact Frontier for Root Capital loan portfolio"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+    "numpy>=1.24",
+    "matplotlib>=3.7",
+    "loguru>=0.7",
+]
+
