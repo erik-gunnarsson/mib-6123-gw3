@@ -5,9 +5,9 @@ description = "Exercise 2 - Efficient Impact Frontier for Root Capital loan port
 requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.0",
-    "openpyxl>=3.1",
     "numpy>=1.24",
     "matplotlib>=3.7",
     "loguru>=0.7",
+    "tqdm>=4.66",
 ]
 
