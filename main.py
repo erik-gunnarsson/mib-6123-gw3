@@ -106,16 +106,20 @@ def load_exercise1_portfolios(data, amounts, incomes, female):
 
 
 def compute_frontier(incomes, female):
-    """Pareto frontier (upper envelope): max income for each female level."""
-    order = np.argsort(female)
+    """Pareto frontier: optimal trade-off from max income (top-left) to max impact (bottom-right).
+    Scans from high impact to low impact, keeping max income at each step, so the frontier
+    includes Philanthropy (max female reach) through Traditional (max income)."""
+    order = np.argsort(female)  # ascending: low to high female
     female_sorted = female[order]
     incomes_sorted = incomes[order]
 
     n = len(female_sorted)
+    # Scan from HIGH female to LOW female (right to left): keep upper envelope of income.
+    # This ensures we include max-impact portfolios (Philanthropy) on the frontier.
     max_so_far = np.empty(n)
-    max_so_far[0] = incomes_sorted[0]
-    for i in range(1, n):
-        max_so_far[i] = max(max_so_far[i - 1], incomes_sorted[i])
+    max_so_far[-1] = incomes_sorted[-1]  # start from rightmost (highest female)
+    for i in range(n - 2, -1, -1):
+        max_so_far[i] = max(max_so_far[i + 1], incomes_sorted[i])
 
     is_frontier = incomes_sorted >= max_so_far
     return female_sorted[is_frontier], incomes_sorted[is_frontier]
