@@ -1,9 +1,7 @@
 # 6123 Groupwork III
 
-Uses uv to run python script 
+Note, this repo uses uv to run python script 
 
-uv sync to insall pkgs 
+uv sync #to install pkgs 
 
-uv run main.py 
-
-outputs in /output fodler
+uv run main.py  #outputs in /output fodler
