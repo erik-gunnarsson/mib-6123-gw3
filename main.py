@@ -1,6 +1,5 @@
 """
-Basic version: 10M random loan portfolios, plot Female vs Income, overlay Exercise 1.
-Simplified for novice Python programmers.
+v2: 10M random loan portfolios, plot Female vs Income, and overlay Exercise 1.
 """
 
 import argparse
