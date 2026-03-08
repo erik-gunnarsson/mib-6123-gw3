@@ -152,6 +152,20 @@ def main():
     )
     logger.info("Generated {} valid portfolios", len(random_incomes))
 
+    # Step 2b: Save portfolio data to CSV
+    portfolios_df = pd.DataFrame(
+        {
+            "Total Expected Net Income (USD)": random_incomes,
+            "Total Female Farmers and Employees Reached": random_female,
+        }
+    )
+    csv_full = output_dir / "portfolios_full_10Mrows.csv"
+    csv_sample = output_dir / "portfolios_sample_100rows.csv"
+    portfolios_df.to_csv(csv_full, index=False)
+    logger.info("Saved full portfolios to {} ({} rows)", csv_full, len(portfolios_df))
+    portfolios_df.head(100).to_csv(csv_sample, index=False)
+    logger.info("Saved sample portfolios to {} (100 rows)", csv_sample)
+
     # Step 3: Load Exercise 1 portfolios
     exercise1 = load_exercise1_portfolios(data, amounts, incomes, female)
     logger.info("Loaded {} Exercise 1 portfolios", len(exercise1))
@@ -213,116 +227,6 @@ def main():
     out_path = output_dir / "plot.png"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     logger.info("Saved plot to {}", out_path)
-    plt.close()
-
-    # Step 6: Zoom plot on Efficient Impact Frontier + Traditional + Positive Screening
-    plot_frontier_zoom(
-        random_incomes,
-        random_female,
-        exercise1,
-        frontier_female,
-        frontier_incomes,
-        output_dir / "plot_zoomed.png",
-    )
-
-
-def plot_frontier_zoom(
-    random_incomes,
-    random_female,
-    exercise1,
-    frontier_female,
-    frontier_incomes,
-    out_path,
-):
-    """Zoomed plot: Efficient Impact Frontier + Traditional + Positive Screening with value annotations."""
-    zoom_names = {"1 Traditional", "2 Positive Screening"}
-    zoom_exercise1 = [(n, inc, fem) for n, inc, fem in exercise1 if n in zoom_names]
-    if not zoom_exercise1:
-        logger.warning("No Traditional or Positive Screening in exercise1; skipping zoom plot")
-        return
-
-    fig, ax = plt.subplots(figsize=(10, 7))
-
-    # Compute zoom bounds to show full frontier segment around Traditional & Positive Screening
-    fem_min = min(fem for _, _, fem in zoom_exercise1)
-    fem_max = max(fem for _, _, fem in zoom_exercise1)
-    inc_min = min(inc for _, inc, _ in zoom_exercise1)
-    inc_max = max(inc for _, inc, _ in zoom_exercise1)
-    # Include frontier points well outside the two portfolios so the line isn't cut off
-    pad_x_extra = max((fem_max - fem_min) * 0.5, 800)
-    xlow, xhigh = fem_min - pad_x_extra, fem_max + pad_x_extra
-    in_range = (frontier_female >= xlow) & (frontier_female <= xhigh)
-    if in_range.any():
-        inc_min = min(inc_min, frontier_incomes[in_range].min())
-        inc_max = max(inc_max, frontier_incomes[in_range].max())
-    pad_x = max((fem_max - fem_min) * 0.15, 800)
-    pad_y = max((inc_max - inc_min) * 0.2, 25000)
-    ax.set_xlim(xlow - pad_x, xhigh + pad_x)
-    ax.set_ylim(inc_min - pad_y, inc_max + pad_y)
-
-    # Scatter: only points inside zoom region
-    xlo, xhi = ax.get_xlim()
-    ylo, yhi = ax.get_ylim()
-    in_zoom = (
-        (random_female >= xlo) & (random_female <= xhi)
-        & (random_incomes >= ylo) & (random_incomes <= yhi)
-    )
-    if in_zoom.any():
-        ax.scatter(
-            random_female[in_zoom],
-            random_incomes[in_zoom],
-            s=2,
-            alpha=0.25,
-            c="steelblue",
-            rasterized=True,
-            label="Random portfolios",
-        )
-
-    # Frontier line
-    if len(frontier_female) > 0:
-        ax.plot(
-            frontier_female,
-            frontier_incomes,
-            color="darkred",
-            linewidth=2.5,
-            label="Efficient Impact Frontier",
-        )
-
-    # Traditional and Positive Screening with value annotations
-    colors = ["#e41a1c", "#377eb8"]
-    markers = ["o", "s"]
-    for i, (name, inc, fem) in enumerate(zoom_exercise1):
-        c = colors[i % len(colors)]
-        m = markers[i % len(markers)]
-        ax.scatter(
-            fem,
-            inc,
-            s=180,
-            c=c,
-            marker=m,
-            edgecolors="black",
-            linewidths=2,
-            label=name,
-            zorder=5,
-        )
-        ax.annotate(
-            f"{name}\nFemale: {fem:,.0f}\nIncome: ${inc:,.0f}",
-            (fem, inc),
-            xytext=(10, 10),
-            textcoords="offset points",
-            fontsize=10,
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.9),
-            arrowprops=dict(arrowstyle="->", color=c),
-        )
-
-    ax.set_xlabel("Total Female Farmers and Employees Reached")
-    ax.set_ylabel("Total Expected Net Income (USD)")
-    ax.set_title("Zoom: Efficient Impact Frontier, Traditional & Positive Screening")
-    ax.legend(loc="lower right", fontsize=9)
-    ax.grid(True, alpha=0.3)
-    fig.tight_layout()
-    fig.savefig(out_path, dpi=150, bbox_inches="tight")
-    logger.info("Saved zoom plot to {}", out_path)
     plt.close()
 
 
