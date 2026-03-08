@@ -1,3 +1,9 @@
-# 6123 Groupwork 
+# 6123 Groupwork III
 
-Uses UV f
+Uses uv to run python script 
+
+uv sync to insall pkgs 
+
+uv run main.py 
+
+outputs in /output fodler
